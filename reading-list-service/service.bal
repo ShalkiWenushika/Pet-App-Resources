@@ -14,9 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/uuid;
 import ballerina/http;
-import ballerina/jwt;
 
 type Book record {|
     string id;
