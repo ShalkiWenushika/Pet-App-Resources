@@ -42,12 +42,13 @@ service /readinglist on new http:Listener(9090) {
 
     resource function get books(http:Headers headers) returns Book[] {
         map<Book> bookMap;
+        BookItem bookItem1 = {
+            title: "Sample Book 1",
+            author: "John Doe",
+            status: "Available"
+        }
         Book book1 = {
-                bookItem: {
-                    title: "Sample Book 1",
-                    author: "John Doe",
-                    status: "Available"
-                },
+                bookItem1,
                 id: "1"
             };
         bookMap["1"] = book1;
