@@ -41,8 +41,26 @@ const string DEFAULT_USER = "default";
 service /readinglist on new http:Listener(9090) {
 
     resource function get books(http:Headers headers) returns Book[]|http:BadRequest|error {
-        map<Book>|http:BadRequest usersBooks = check getUsersBooks(headers);
-        return usersBooks.toArray();
+        map<Book> bookMap;
+        Book book1 = {
+                bookItem: {
+                    title: "Sample Book 1",
+                    author: "John Doe",
+                    status: "Available"
+                },
+                id: "1"
+            };
+        bookMap["1"] = book1;
+        Book book2 = {
+                bookItem: {
+                    title: "Sample Book 2",
+                    author: "Jane Smith",
+                    status: "Checked Out"
+                },
+                id: "2"
+            };
+        bookMap["2"] = book2;
+        return bookMap.toArray();
     }
 
     resource function post books(http:Headers headers,
@@ -73,7 +91,7 @@ service /readinglist on new http:Listener(9090) {
 function getUsersBooks(http:Headers headers) returns map<Book>|http:BadRequest|error {
         string|error jwtAssertion = headers.getHeader("x-jwt-assertion");
         if (jwtAssertion is error) {
-            return {};
+            return <http:Ok>{};
         }
 
         [jwt:Header, jwt:Payload] [_, payload] = check jwt:decode(jwtAssertion);
