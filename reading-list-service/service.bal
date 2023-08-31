@@ -16,7 +16,14 @@
 
 import ballerina/http;
 
+type BookItem record {|
+    string title;
+    string author;
+    string status;
+|};
+
 type Book record {|
+    *BookItem;
     string id;
 |};
 
@@ -26,7 +33,8 @@ const string DEFAULT_USER = "default";
 service /readinglist on new http:Listener(9090) {
 
     resource function get books(http:Headers headers) returns Book {
-        Book book1 = { id: "1"};
+        BookItem bookItem1 = { title: "Title1", author: "Author1", status: "Status1"};
+        Book book1 = { bookItem1, id: "1"};
         return book1;
     }
 }
